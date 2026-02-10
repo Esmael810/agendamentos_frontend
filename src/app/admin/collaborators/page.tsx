@@ -22,7 +22,7 @@ export default function CollaboratorsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  (useEffect(() => {
     async function load() {
       try {
         const data = await getAllCollaborator();
@@ -35,7 +35,7 @@ export default function CollaboratorsPage() {
     }
     load();
   }),
-    [];
+    []);
 
   const removeCollaborator = (id: number) => {
     setCollaborators((prev) => prev.filter((c) => c.id !== id));
@@ -50,16 +50,19 @@ export default function CollaboratorsPage() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="font-bold text-white">Colaboradores</h1>
+        <h1 className="font-bold text-white text-xl">Colaboradores</h1>
 
         <button
           onClick={() => router.push("/admin/collaborators/createCollaborator")}
-          className="cursor-pointer"
+          className="cursor-pointer text-green-400 font-bold transition-all duration-200 hover:scale-110  hover:text-green-500"
         >
           Criar Colaborador
         </button>
       </div>
-      <CollaboratorTable collaborators={collaborators} onDelete={removeCollaborator}  />
+      <CollaboratorTable
+        collaborators={collaborators}
+        onDelete={removeCollaborator}
+      />
     </div>
   );
 }

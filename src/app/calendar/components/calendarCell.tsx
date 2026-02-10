@@ -1,3 +1,4 @@
+import { Category } from "@/app/services/category/categoryService";
 import { Categorias_Fic } from "@/constantsFic/categorias";
 import { format } from "date-fns";
 
@@ -5,6 +6,7 @@ import { format } from "date-fns";
 interface CalendarCellProps {
   dayNumber: string;
   date: Date;
+  categories: Category[];
   activeSelection: { date: Date; categoryId: number } | null;
   onCategoryClick: (categoryId: number, date: Date) => void;
 }
@@ -12,6 +14,7 @@ interface CalendarCellProps {
 export function CalendarCell({
   dayNumber,
   date,
+  categories,
   activeSelection,
   onCategoryClick,
 }: CalendarCellProps) {
@@ -23,7 +26,7 @@ export function CalendarCell({
       </div>
 
       <div className="flex flex-col gap-1 px-1">
-        {Categorias_Fic.map((cat) => {
+        {categories.map((cat) => {
           const isActive = activeSelection?.categoryId === cat.id && format(activeSelection.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd");; 
 
           return (

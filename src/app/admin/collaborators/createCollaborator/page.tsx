@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -32,14 +31,12 @@ export default function CreateCollaboratorPage() {
   const [municipalityId, setMunicipalityId] = useState<number | "">("");
   const [categoryId, setCategoryId] = useState<number | "">("");
 
- 
   const [islands, setIslands] = useState<Island[]>([]);
   const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
   const [loading, setLoading] = useState(false);
 
-  
   useEffect(() => {
     async function loadInitialData() {
       try {
@@ -56,7 +53,6 @@ export default function CreateCollaboratorPage() {
     loadInitialData();
   }, []);
 
-  
   useEffect(() => {
     async function loadMunicipalities() {
       if (islandId === "") {
@@ -67,7 +63,7 @@ export default function CreateCollaboratorPage() {
       try {
         const data = await getMunicipalities(Number(islandId));
         setMunicipalities(data);
-        setMunicipalityId(""); // resetar seleção ao trocar ilha
+        setMunicipalityId(""); 
       } catch (err) {
         console.error("Erro ao buscar municípios:", err);
         setMunicipalities([]);
@@ -78,7 +74,6 @@ export default function CreateCollaboratorPage() {
     loadMunicipalities();
   }, [islandId]);
 
-  
   const submitting = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -92,24 +87,25 @@ export default function CreateCollaboratorPage() {
       if (islandId === "") return alert("Selecione uma Ilha");
       if (municipalityId === "") return alert("Selecione um Município");
       if (categoryId === "") return alert("Selecione uma Categoria");
-      if (!identificationCode) return alert("Preencha o Código de Identificação");
+      if (!identificationCode)
+        return alert("Preencha o Código de Identificação");
 
       const payload: CreateCollaboratorPayload = {
         name,
         email,
         contact,
         nif,
-        islandId: Number(islandId),            
+        islandId: Number(islandId),
         municipalityId: Number(municipalityId),
         categoryId: Number(categoryId),
         identificationCode,
       };
 
-      console.log("Payload enviado:", payload);
+      //console.log("Payload enviado:", payload);
 
       await createCollaborator(payload);
       alert("Colaborador Criado com Sucesso");
-      router.push("/admin/collaborator");
+      router.push("/admin/collaborators");
     } catch (err) {
       alert("Falha ao criar colaborador");
       console.error(err);
@@ -122,7 +118,6 @@ export default function CreateCollaboratorPage() {
     <div className="max-w-md mx-auto p-4 mt-14 bg-white rounded shadow">
       <h1 className="text-xl font-bold mb-4 text-black">Criar Colaborador</h1>
       <form onSubmit={submitting} className="flex flex-col gap-3 text-black">
-
         <input
           type="text"
           placeholder="Nome"
@@ -152,7 +147,6 @@ export default function CreateCollaboratorPage() {
           className="border p-2 rounded placeholder:text-xs"
         />
 
-       
         <select
           value={islandId}
           onChange={(e) =>
@@ -168,12 +162,11 @@ export default function CreateCollaboratorPage() {
           ))}
         </select>
 
-    
         <select
           value={municipalityId}
           onChange={(e) =>
             setMunicipalityId(
-              e.target.value === "" ? "" : Number(e.target.value)
+              e.target.value === "" ? "" : Number(e.target.value),
             )
           }
           className="border p-2 rounded"
@@ -187,7 +180,6 @@ export default function CreateCollaboratorPage() {
           ))}
         </select>
 
-      
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(Number(e.target.value))}
@@ -220,5 +212,3 @@ export default function CreateCollaboratorPage() {
     </div>
   );
 }
-
-

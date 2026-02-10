@@ -31,7 +31,7 @@ export async function saveAvailabilities(
       );
 
       if (!response.ok) {
-        throw new Error(`Falha ao guardar`);
+        throw new Error("Falha ao guardar");
       }
     }
     return true;

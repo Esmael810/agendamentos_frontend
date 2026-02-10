@@ -45,7 +45,7 @@ export default function AccessCode() {
           placeholder="Digite o seu código de acesso"
           className=" w-full rounded border border-zinc-300 p-2 dark:border-zinc-600 text-xs"  
         />
-        <button onClick={handleApply} className="mt-4 w-full rounded- bg-blue-500 p-2 text-white font-bold hover:bg-blue-600">
+        <button onClick={handleApply} className="mt-4 w-full rounded- bg-blue-500 p-2 text-white font-bold hover:bg-blue-600 cursor-pointer">
           Aplicar
         </button>
       </div>

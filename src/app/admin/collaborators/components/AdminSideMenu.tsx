@@ -12,11 +12,13 @@ export default function AdimSideMenu({ isOpen, onClose }: AdminSideMenuProps) {
 
   const menu = [
     { label: "Colaboradores", href: "/admin/collaborators" },
-    { label: "Confirmar Disponibilidades Pendentes", href: "" },
-    { label: "Concluir/ Cancelar Turnos", href: "" },
-    { label: "Adcionar Tolerancia de Ponto", href: "" },
-    { label: "Adcionar Categoria", href: "" },
-    { label: "Adcionar Remuneração a Categorias", href: "" },
+    { label: "Confirmar/ Cancelar Disponibilidades Pendentes", href: "/admin/availabilities"},
+    { label: "Concluir/ Cancelar Turnos", href: "/admin/scheduling" },
+    { label: "Turnos Concluídos", href: "/admin/scheduling/completed" },
+    { label: "Turnos Cancelados", href: "/admin/scheduling/canceled" },
+    { label: "Adicionar Tolerancia de Ponto", href: "" },
+    { label: "Adicionar Categoria", href: "/admin/category" },
+    { label: "Adicionar Remuneração a Categorias", href: "" },
   ];
 
   return (

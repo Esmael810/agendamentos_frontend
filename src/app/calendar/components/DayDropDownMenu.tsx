@@ -7,7 +7,7 @@ interface DayDropDownMenuProps {
   value: Date;
   children: React.ReactNode;
 
-  // aqui verefikar se e do tipo date ou string
+  
   onSelectShift: (date: Date, shift: ShiftType) => void;
 }
 
