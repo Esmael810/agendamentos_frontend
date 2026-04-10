@@ -3,19 +3,17 @@
 import { useEffect, useState } from "react";
 import { getSchedulings } from "@/app/services/schedulings/getSchedulings";
 import CanceledSchedulingsTable from "./components/CanceledShedulingsTable";
-
-export interface CanceledScheduling {
-  id: number;
-  collaboratorName: string;
-  start: string;
-  end: string;
-  calculatedValue: number | null;
-  status: "CANCELADO";
-  description: string;
-}
+import {
+  groupSchedulingByCategory,
+  Scheduling,
+  SchedulingCategoryGroup,
+} from "../type";
+import PainelCards from "../../components/shared/PainelCards";
+import CategoryTabs from "../../components/shared/CategoryTabs";
 
 export default function AdminSchedulingsCanceledPage() {
-  const [data, setData] = useState<CanceledScheduling[]>([]);
+  const [categories, setCategories] = useState<SchedulingCategoryGroup[]>([]);
+  const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,10 +22,11 @@ export default function AdminSchedulingsCanceledPage() {
         const all = await getSchedulings();
 
         const cancelados = all.filter(
-          (item: CanceledScheduling) => item.status === "CANCELADO",
+          (item: Scheduling) => item.status === "CANCELADO",
         );
-
-        setData(cancelados);
+        const groupe = groupSchedulingByCategory(cancelados);
+        setCategories(groupe);
+        if (groupe.length > 0) setActiveCategoryId(groupe[0].categoryId);
       } finally {
         setLoading(false);
       }
@@ -36,16 +35,69 @@ export default function AdminSchedulingsCanceledPage() {
     load();
   }, []);
 
-  if (loading) {
-    return <p>Carregando...</p>;
+  function handleCardClick(categoryId: number) {
+    setActiveCategoryId(categoryId);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  return (
-    <div>
-      <h1 className="text-xl font-bold mb-4 text-white">
-      Turnos Cancelados
-      </h1>
 
-      <CanceledSchedulingsTable data={data} />
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-blue-200 text-sm animate-pulse">Carregando...</div>
+      </div>
+    );
+  }
+
+  const activeCategory = categories.find(
+    (c) => c.categoryId === activeCategoryId,
+  );
+
+  const painelData = categories.map((cat) => ({
+    categoryId: cat.categoryId,
+    categoryName: cat.categoryName,
+    count: cat.scheduling.length,
+  }));
+
+  return (
+    <div className="p-4 md:p-6 space-y-6">
+      <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg shadow-blue-900/30 border border-white/20">
+        <div className="px-6 pt-6 pb-4 border-b border-gray-100">
+          <h1 className="text-center text-xl font-bold text-gray-800">
+            Turnos Cancelados{" "}
+          </h1>
+        </div>
+
+        <div className="px-6 pt-4">
+          {categories.length === 0 ? (
+            <p className="text-gray-400 text-sm py-4 text-center">
+              Nenhum turno cancelado de momento.
+            </p>
+          ) : (
+            <CategoryTabs
+              categories={categories.map((c) => ({
+                categoryId: c.categoryId,
+                categoryName: c.categoryName,
+                items: c.scheduling,
+              }))}
+              activeId={activeCategoryId}
+              onSelect={setActiveCategoryId}
+            />
+          )}
+        </div>
+
+        <div className="px-6 pb-6">
+          {activeCategory && (
+            <CanceledSchedulingsTable data={activeCategory.scheduling} />
+          )}
+        </div>
+      </div>
+
+      <PainelCards
+        title="Painel de Turnos Cancelados"
+        categories={painelData}
+        buttonLabel="Ver Cancelados"
+        onSelectCategory={handleCardClick}
+      />
     </div>
   );
 }

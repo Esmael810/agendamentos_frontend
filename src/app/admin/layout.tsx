@@ -13,15 +13,16 @@ export default function AdminLayout({
       <AdimSideMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <div>
         <header className="flex items-center p-5 text-white shadow rounded-2xl">
-          <button onClick={() => setIsOpen(!isOpen)} className=" text-2xl cursor-pointer">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-2xl cursor-pointer"
+          >
             ☰
           </button>
         </header>
       </div>
 
-      <main className="flex-1 p-16 bg">
-        {children}
-      </main>
+      <main className="flex-1 p-16 bg">{children}</main>
     </div>
   );
 }

@@ -1,37 +1,51 @@
-import { CanceledScheduling } from "../page";
+import Status from "@/app/admin/components/shared/Status";
+import { Scheduling } from "../../type";
+
 
 interface CanceledSchedulingProps {
-  data: CanceledScheduling[];
+  data: Scheduling[];
 }
 
 export default function CanceledSchedulingsTable({ data }: CanceledSchedulingProps) {
+
+  if (data.length === 0) {
+    return (
+      <div className="py-12 text-center text-gray-400 text-sm">
+        Nenhum turno cancelado nesta categoria.
+      </div>
+    );
+  }
   return (
-    <div className="overflow-x-auto bg-white rounded shadow">
-      <table className="w-full text-black">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="p-2 text-left">Colaborador</th>
-            <th className="p-2 text-left">Início</th>
-            <th className="p-2 text-left">Fim</th>
-            <th className="p-2 text-left">Descrição</th>
-            <th className="p-2 text-left">Valor</th>
-            <th className="p-2 text-left">Status</th>
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-gray-100">
+            <th className="py-3 px-4 text-left text-xs font-semibold text-black uppercase tracking-wide">Colaborador</th>
+            <th className="py-3 px-4 text-left text-xs font-semibold text-black uppercase tracking-wide">Início</th>
+            <th className="py-3 px-4 text-left text-xs font-semibold text-black uppercase tracking-wide">Fim</th>
+            <th className="py-3 px-4 text-left text-xs font-semibold text-black uppercase tracking-wide">Descrição</th>
+            <th className="py-3 px-4 text-left text-xs font-semibold text-black uppercase tracking-wide">Valor</th>
+            <th className="py-3 px-4 text-left text-xs font-semibold text-black uppercase tracking-wide">Status</th>
           </tr>
         </thead>
-
         <tbody>
-          {data.map((item) => (
-            <tr key={item.id} className="border-t">
-              <td className="p-2">{item.collaboratorName}</td>
-
-              <td className="p-2">{item.start}</td>
-              <td className="p-2">{item.end}</td>
-
-              <td className="p-2">{item.description}</td>
-
-              <td className="p-2">{item.calculatedValue ?? "-"}</td>
-
-              <td className="p-2 text-red-700 font-bold">CANCELADO</td>
+          {data.map((item, idx) => (
+            <tr
+              key={item.id}
+              className={`border-b border-gray-50 transition-colors hover:bg-gray-50 ${
+                idx % 2 === 0 ? "bg-white" : "bg-gray-50/50"
+              }`}
+            >
+              <td className="py-3.5 px-4 font-semibold text-gray-800">{item.collaboratorName}</td>
+              <td className="py-3.5 px-4 text-gray-600 font-mono text-xs">{new Date(item.start).toLocaleString("pt-CV")}</td>
+              <td className="py-3.5 px-4 text-gray-600 font-mono text-xs">{new Date(item.end).toLocaleString("pt-CV")}</td>
+              <td className="py-3.5 px-4 text-gray-500 text-xs">{item.description}</td>
+              <td className="py-3.5 px-4 text-gray-500">
+                {item.calculatedValue}
+              </td>
+              <td className="py-3.5 px-4">
+                <Status status={item.status} />
+              </td>
             </tr>
           ))}
         </tbody>

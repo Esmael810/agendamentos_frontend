@@ -20,7 +20,7 @@ export default function RootLayout({
        <body className="flex flex-col min-h-screen ">
      
         <Header />
-        <main className="flex-grow bg-blue-600">
+        <main className="grow bg-linear-to-l from-blue-800 to-blue-700">
         <Providers>{children}</Providers>
         </main>
         <Footer />

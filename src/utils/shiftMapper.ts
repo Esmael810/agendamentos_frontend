@@ -7,14 +7,14 @@ export interface Shiftime {
 
 export function mapShiftTime(shift: ShiftType): Shiftime {
   switch (shift) {
-    case "Manhã":
-      return { startTime: "06:00", endTime: "12:00" };
+    case "Turno_1":
+      return { startTime: "08:00", endTime: "16:00" };
 
-    case "Tarde":
-      return { startTime: "12:00", endTime: "22:00" };
+    case "Turno_2":
+      return { startTime: "16:00", endTime: "00:00" };
 
-    case "Noite":
-      return { startTime: "22:00", endTime: "06:00" };
+    case "Turno_3":
+      return { startTime: "00:00", endTime: "08:00" };
 
     default:
       throw new Error("Turno invalido");

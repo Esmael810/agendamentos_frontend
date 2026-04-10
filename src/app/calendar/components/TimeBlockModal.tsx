@@ -1,5 +1,13 @@
-import { SelectType, TimeBlock } from "../shiftTypes";
+import { SelectType, ShiftType, TimeBlock } from "../shiftTypes";
 import TimeBlockSelector from "./TimeBlockSelector";
+
+const SHIFTS: ShiftType[] = ["Turno_1", "Turno_2", "Turno_3"];
+
+const SHIFT_LABELS: Record<ShiftType, string> = {
+  Turno_1: "Turno 1 — 08h às 16h",
+  Turno_2: "Turno 2 — 16h às 00h",
+  Turno_3: "Turno 3 — 00h às 08h",
+};
 
 interface TimeBlockModalProps {
   selection: SelectType;
@@ -14,29 +22,72 @@ export default function TimeBlockModal({
   onSave,
   onClose,
 }: TimeBlockModalProps) {
+  const totalHours = selection.blocks.length * 2;
+
+  function blocksForShift(shift: ShiftType): TimeBlock[] {
+    return selection.blocks.filter((b) => b.shift === shift);
+  }
+
+  function handleShiftToggle(shift: ShiftType, updated: TimeBlock[]) {
+    const otherBlocks = selection.blocks.filter((b) => b.shift !== shift);
+    onChangeBlocks([...otherBlocks, ...updated]);
+  }
+
   return (
-    <div className=" absolute top-1/2 right-1/3 z-50 w-[360px]">
-      <div className="bg-blue-500 rounded-xl p-6 w-[400px]">
-        <h2 className="font-bold mb-2 text-black">
-          {selection.date} - {selection.shift}
-        </h2>
-
-        <TimeBlockSelector
-          shift={selection.shift}
-          selectBlocks={selection.blocks}
-          onToggle={onChangeBlocks}
-        />
-
-        <div className="flex justify-end gap-2 mt-4 font-bold">
-          <button onClick={onClose} className="cursor-pointer text-red-500">
-            Cancelar
-          </button>
+    <div
+      className="absolute inset-0 z-50 flex items-center justify-center bg-black/30"
+      onClick={onClose}
+    >
+      <div
+        className="bg-blue-500 rounded-xl p-6 w-[390px]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="font-bold text-black text-sm">{selection.date}</h2>
           <button
-            onClick={onSave}
-            className="bg-blue-600 text-white px-3 py-1 rounded cursor-pointer"
+            onClick={onClose}
+            className="cursor-pointer text-red-500 font-bold"
           >
-            Guardar
+            x
           </button>
+        </div>
+
+        <div className="space-y-4 ">
+          {SHIFTS.map((shift) => (
+            <div key={shift}>
+              <p className="text-xs font-bold text-black">
+                {SHIFT_LABELS[shift]}
+              </p>
+              <TimeBlockSelector
+                shift={shift}
+                selectBlocks={blocksForShift(shift)}
+                onToggle={(updated) => handleShiftToggle(shift, updated)}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-between items-center mt-4">
+          <span className="text-xs text-white/80">
+            {selection.blocks.length > 0
+              ? `${selection.blocks.length} bloco${selection.blocks.length > 1 ? "s" : ""} (${totalHours}h)`
+              : "Nenhum bloco seleccionado"}
+          </span>
+          <div className="flex gap-2 font-bold">
+            <button
+              onClick={onClose}
+              className="cursor-pointer text-red-500 text-sm"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={onSave}
+              disabled={selection.blocks.length === 0}
+              className="bg-blue-700 text-white px-3 py-1 rounded cursor-pointer text-sm disabled:opacity-40"
+            >
+              Guardar
+            </button>
+          </div>
         </div>
       </div>
     </div>

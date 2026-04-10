@@ -1,7 +1,7 @@
+import { apiFetch } from "@/lib/apiFetch";
+
 export async function deleteCategory(id: number) {
-  const res = await fetch(``, {
+  return await apiFetch(`http://localhost:5281/api/v1/Category/${id}`, {
     method: "DELETE",
   });
-
-  if (!res.ok) throw new Error("Erro ao eliminar categoria");
 }

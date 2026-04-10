@@ -57,7 +57,7 @@ export default function EditCollaboratorPage() {
         setIslandId(collaboratorData.islandId);
         setMunicipalityId(collaboratorData.municipalityId);
 
-        // Carregar municípios da ilha selecionada
+       
         if (collaboratorData.islandId) {
           const mun = await getMunicipalities(collaboratorData.islandId);
           setMunicipalities(mun);
@@ -83,7 +83,7 @@ export default function EditCollaboratorPage() {
       try {
         const data = await getMunicipalities(Number(islandId));
         setMunicipalities(data);
-        setMunicipalityId(""); // resetar seleção
+        setMunicipalityId(""); 
       } catch (err) {
         console.error("Erro ao buscar municípios:", err);
         setMunicipalities([]);
@@ -221,7 +221,7 @@ export default function EditCollaboratorPage() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 cursor-pointer"
         >
           {loading ? "Atualizando..." : "Atualizar Colaborador"}
         </button>

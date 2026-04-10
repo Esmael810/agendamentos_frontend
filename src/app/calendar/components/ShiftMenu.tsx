@@ -10,36 +10,38 @@ interface ShiftMenuProps {
 
 export default function ShiftMenu({ date, onSelect, onClose }: ShiftMenuProps) {
   return (
-    <div className=" absolute top-1/2 left-1/2 z-50  w-60 rounded-lg  bg-blue-500 border p-2  shadow-lg  text-xs font-bold ">
-      <p>{format(date, "yyyy/MM/dd")}</p>
+    <div className=" absolute top-1/2 left-1/2 z-50  w-60 rounded-lg  bg-blue-500 border p-2  shadow-lg  text-xs font-bold text-center ">
+      <p>{format(date, "dd/MM/yyyy")}</p>
 
-      <button onClick={onClose} className="absolute top-1 right-1 text-red-500 hover:text-red-600 cursor-pointer ">
-        x
+      <button
+        onClick={onClose}
+        className="absolute top-2 right-2 text-red-500 hover:text-red-600 cursor-pointer "
+      >
+        X
       </button>
 
-      <div className="space-y-1 text-black">
+      <div className="space-y-1 text-black text-center">
         <div
           className="cursor-pointer hover:bg-pink-100 p-1 rounded"
           onClick={() => {
-           
-            onSelect(date, "Manhã");
+            onSelect(date, "Turno_1");
           }}
         >
-          Periodo da Manhã (06h : 14h)
+          Turno 1 (08h00 - 16h00)
         </div>
 
         <div
           className="cursor-pointer hover:bg-blue-100 p-1 rounded"
-          onClick={() => onSelect(date, "Tarde")}
+          onClick={() => onSelect(date, "Turno_2")}
         >
-          Periodo da Tarde (14h : 22h)
+          Turno 2 (16h00 - 00h00)
         </div>
 
         <div
           className="cursor-pointer hover:bg-blue-100 p-1 rounded"
-          onClick={() => onSelect(date, "Noite")}
+          onClick={() => onSelect(date, "Turno_3")}
         >
-          Periodo da Noite (22h : 06h)
+          Turno 3 (00h00 - 08h00 )
         </div>
       </div>
     </div>

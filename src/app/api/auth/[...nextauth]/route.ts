@@ -20,21 +20,21 @@ export const authOption: AuthOptions = {
           },
         );
 
-        //console.log("Status da Resposta da API 5281:", response.status);
+        //console.log("Status da Resposta da API:", response.status);
 
         if (!response.ok) {
           return null;
         }
         const data = await response.json();
-        // consolddd
-          console.log("Dados recebidos da API:", data);
 
+        //console.log("Dados recebidos da API:", data);
 
         const user = {
           id: Number(data.collaboratorId),
           name: data.collaboratorName,
+          isFirstLogin: data.isFirstLogin,
         };
-        console.log("Usuário retornado pelo authorize:", user);
+        //console.log("Usuário retornado pelo autorize:", user);
 
         return user;
       },
@@ -46,18 +46,18 @@ export const authOption: AuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
-      //ggggggg
-        console.log("Token dentro do session callback:", token);
-
+      //console.log("Token dentro do session kallback:", token);
       if (user) {
         token.id = user.id;
         token.name = user.name;
+        token.isFirstLogin = user.isFirstLogin
       }
       return token;
     },
     async session({ session, token }) {
-  session.user.id = token.id as number;
+      session.user.id = token.id as number;
       session.user.name = token.name as string;
+       session.user.isFirstLogin = token.isFirstLogin as boolean;
       return session;
     },
   },

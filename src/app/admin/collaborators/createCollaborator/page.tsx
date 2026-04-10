@@ -20,10 +20,10 @@ import React, { useEffect, useState } from "react";
 export default function CreateCollaboratorPage() {
   const router = useRouter();
 
-  // Campos do colaborador
+ 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [contact, setContact] = useState("");
+  const [contact, setContact] = useState("(+238) ");
   const [nif, setNif] = useState("");
   const [identificationCode, setIdentificationCode] = useState("");
 
@@ -47,7 +47,7 @@ export default function CreateCollaboratorPage() {
         setIslands(islandsData);
         setCategories(categoriesData);
       } catch (err) {
-        console.error("Erro ao carregar ilhas e categorias:", err);
+        console.error( "Erro ao carregar ilhas e categorias:", err);
       }
     }
     loadInitialData();
@@ -79,7 +79,7 @@ export default function CreateCollaboratorPage() {
     setLoading(true);
 
     try {
-      // Validação passo a passo
+      
       if (!name) return alert("O campo Nome é obrigatório");
       if (!email) return alert("O campo Email é obrigatório");
       if (!contact) return alert("O campo Contato é obrigatório");
@@ -106,8 +106,8 @@ export default function CreateCollaboratorPage() {
       await createCollaborator(payload);
       alert("Colaborador Criado com Sucesso");
       router.push("/admin/collaborators");
-    } catch (err) {
-      alert("Falha ao criar colaborador");
+    } catch (err: any) {
+      alert( err.message || "Falha ao criar colaborador");
       console.error(err);
     } finally {
       setLoading(false);
@@ -115,36 +115,36 @@ export default function CreateCollaboratorPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 mt-14 bg-white rounded shadow">
+    <div className="max-w-lg mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg shadow-black border border-white/20 p-8">
       <h1 className="text-xl font-bold mb-4 text-black">Criar Colaborador</h1>
-      <form onSubmit={submitting} className="flex flex-col gap-3 text-black">
+      <form onSubmit={submitting} className="flex flex-col gap-3 text-gray-800">
         <input
           type="text"
           placeholder="Nome"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border p-2 rounded placeholder:text-xs"
+          className="border p-2 rounded text-[12px] placeholder:text-[10px]"
         />
         <input
           type="text"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border p-2 rounded placeholder:text-xs"
+          className="border p-2 rounded text-[12px] placeholder:text-[10px]"
         />
         <input
           type="text"
           placeholder="Contato"
           value={contact}
           onChange={(e) => setContact(e.target.value)}
-          className="border p-2 rounded placeholder:text-xs"
+          className="border p-2 rounded text-[12px] placeholder:text-[10px]"
         />
         <input
           type="text"
           placeholder="NIF"
           value={nif}
           onChange={(e) => setNif(e.target.value)}
-          className="border p-2 rounded placeholder:text-xs"
+          className="border p-2 rounded text-[12px] placeholder:text-[10px]"
         />
 
         <select
@@ -152,7 +152,7 @@ export default function CreateCollaboratorPage() {
           onChange={(e) =>
             setIslandId(e.target.value === "" ? "" : Number(e.target.value))
           }
-          className="border p-2 rounded"
+          className="border p-2 rounded text-[12px]"
         >
           <option value="">Selecione a Ilha</option>
           {islands.map((island) => (
@@ -169,7 +169,7 @@ export default function CreateCollaboratorPage() {
               e.target.value === "" ? "" : Number(e.target.value),
             )
           }
-          className="border p-2 rounded"
+          className="border p-2 rounded text-[12px]"
           disabled={municipalities.length === 0}
         >
           <option value="">Selecione o Município</option>
@@ -183,7 +183,7 @@ export default function CreateCollaboratorPage() {
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(Number(e.target.value))}
-          className="border p-2 rounded"
+          className="border p-2 rounded text-[12px]"
         >
           <option value="">Selecione a Categoria</option>
           {categories.map((cat) => (
@@ -195,16 +195,16 @@ export default function CreateCollaboratorPage() {
 
         <input
           type="text"
-          placeholder="Código de Identificação"
+          placeholder="Código de Identificação(8 caracteres)"
           value={identificationCode}
           onChange={(e) => setIdentificationCode(e.target.value)}
-          className="border p-2 rounded placeholder:text-xs"
+          className="border p-2 rounded text-[12px] placeholder:text-[12px]"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition cursor-pointer"
+          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition cursor-pointer"
         >
           {loading ? "Guardando..." : "Criar Colaborador"}
         </button>
